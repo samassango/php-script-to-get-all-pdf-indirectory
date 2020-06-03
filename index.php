@@ -5,11 +5,13 @@ class filedetails {
     var $createddate;
     var $filesize;
     var $file;
-    function __construct($owner, $filedate, $file, $filesize){
+    var $filepath;
+    function __construct($owner, $filedate, $file, $filesize, $filepath){
         $this->fileowner=$owner;
         $this->createddate=$filedate;
         $this->filesize = $filesize;
-        $this->file= $file; 
+        $this->file= $file;
+        $this->filepath =$filepath;
     }
 
     public function set_file_owner($owner){
@@ -52,6 +54,7 @@ function comparator($object1, $object2) {
     $datetime2 = strtotime($object2->createddate); 
     return $datetime2 - $datetime1;
 } 
+
 // The file path you want to pick the documents from.
 $files_dir_path = realpath("C:/Users/SbuMassango/Downloads/"); 
  
@@ -60,14 +63,15 @@ $pdffilesdetails = array();
 $valid_files = array('pdf');
 if(is_dir($files_dir_path)){
   foreach(scandir($files_dir_path) as $file){
-    $ext = pathinfo($file, PATHINFO_EXTENSION);
-    if(in_array($ext, $valid_files)){
-        $date = date("F d Y H:i:s", filectime($files_dir_path."/".$file));
-        $size = filesize($files_dir_path."/".$file);
-        $owner = fileowner($files_dir_path."/".$file);
-        $pdfdetails = new filedetails($owner, $date, $file, $size);
-      array_push($pdffiles, $pdfdetails);
-    }   
+        $ext = pathinfo($file, PATHINFO_EXTENSION);
+        if(in_array($ext, $valid_files)){
+            $date = date("F d Y H:i:s", filectime($files_dir_path."/".$file));
+            $size = filesize($files_dir_path."/".$file);
+            $owner = fileowner($files_dir_path."/".$file);
+            $filepath = $files_dir_path."/".$file;
+            $pdfdetails = new filedetails($owner, $date, $file, $size, $filepath);
+           array_push($pdffiles, $pdfdetails);
+        }
  }
 }
 
