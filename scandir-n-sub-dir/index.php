@@ -59,7 +59,7 @@ class pdffiles{
         // Check directory exists or not
         if(file_exists($path) && is_dir($path)){
             // Search the files in this directory
-            $files = glob($path ."*.*");
+            $files = glob($path ."/*");
             if(count($files) > 0){
                 // Loop through retuned array
                 foreach($files as $file){
@@ -69,7 +69,7 @@ class pdffiles{
                             $date = date("F d Y H:i:s", filectime($file));
                             $size = filesize($file);
                             $owner = fileowner($file);
-                            $filepath = $file;
+                            $filepath = str_replace('//','/',$file);
                             $pdfdetails = new filedetails($owner, $date, basename($file), $size, $filepath);
                             array_push($this->pdffiles, $pdfdetails); 
                         }
